@@ -76,8 +76,9 @@ if (NOT EXISTS "${PX_LOCAL_MARKER}")
 
     file(TOUCH ${PX_LOCAL_MARKER})
 
-    file(REMOVE "${PHYSX_BINS}/${PHYSX_BINARY}.7z")
 endif()
+
+file(REMOVE "${PHYSX_BINS}/${PHYSX_BINARY}.7z")
 
 add_library(ezPhysX::Foundation SHARED IMPORTED GLOBAL)
 set_target_properties(ezPhysX::Foundation PROPERTIES IMPORTED_LOCATION_DEBUG "${PHYSX_BIN_DIR}/${PHYSX_BIN_DEBUG}/PhysXFoundation${PHYSX_DLL_SUFFIX}")
