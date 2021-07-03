@@ -24,11 +24,11 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
     else()
         set(PHYSX_BINARY "uwp.x86_64.vc141")
         set(PHYSX_URL "https://github.com/ezEngine/thirdparty/releases/download/PhysX-4.1.2/PhysX_4.1.1.27006925_uwp.x86_64.vc141.7z")
-        endif()
+    endif()
         
-    elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         
-        if (EZ_CMAKE_ARCHITECTURE_ARM)
+    if (EZ_CMAKE_ARCHITECTURE_ARM)
         message(FATAL_ERROR "Physx does not support ARM on desktop.")
     else()
         set(PHYSX_BINARY "win.x86_64.vc142.md")
@@ -49,36 +49,14 @@ else()
     message(FATAL_ERROR "Unsupported or not implemented PhysX platform.")
 endif()
 
-set(EZ_PHYSX_SDK ${CMAKE_CURRENT_SOURCE_DIR}/${PHYSX_VERSION})
+set(PHYSX_BINS "${CMAKE_BINARY_DIR}/PhysX")
+set(PHYSX_BIN_DIR "${PHYSX_BINS}/${PHYSX_BINARY}")
 
-set (PHYSX_BINS "${EZ_PHYSX_SDK}/PhysX/bin")
+set(EZ_PHYSX_SDK "${CMAKE_CURRENT_SOURCE_DIR}/${PHYSX_VERSION}")
+set(PHYSX_INC_DIR "${EZ_PHYSX_SDK}/PhysX/Include")
+set(PXSHARED_INC_DIR "${EZ_PHYSX_SDK}/PxShared/include")
 
-set (PHYSX_BIN_DIR "${PHYSX_BINS}/${PHYSX_BINARY}")
-set (PHYSX_INC_DIR "${EZ_PHYSX_SDK}/PhysX/Include")
-set (PXSHARED_INC_DIR "${EZ_PHYSX_SDK}/PxShared/include")
-
-set (PX_LOCAL_MARKER "${PHYSX_BINS}/${PHYSX_BINARY}.extracted")
-
-if (NOT EXISTS "${PX_LOCAL_MARKER}")
-
-    set(ZIP_APP "${CMAKE_SOURCE_DIR}/Data/Tools/Precompiled/7za.exe")
-
-    if (NOT EXISTS "${PHYSX_BINS}/${PHYSX_BINARY}.7z")
-        file(DOWNLOAD ${PHYSX_URL} "${PHYSX_BINS}/${PHYSX_BINARY}.7z" SHOW_PROGRESS)
-    endif()
-
-    message(STATUS "Extracting '${PHYSX_BINARY}.7z'...")  
-    execute_process(COMMAND ${ZIP_APP} 
-        x "${PHYSX_BINS}/${PHYSX_BINARY}.7z"
-        -aoa
-        WORKING_DIRECTORY "${PHYSX_BINS}"
-        COMMAND_ERROR_IS_FATAL ANY)
-
-    file(TOUCH ${PX_LOCAL_MARKER})
-
-endif()
-
-file(REMOVE "${PHYSX_BINS}/${PHYSX_BINARY}.7z")
+ez_download_and_extract("${PHYSX_URL}" "${PHYSX_BINS}" "${PHYSX_BINARY}" "7z")
 
 add_library(ezPhysX::Foundation SHARED IMPORTED GLOBAL)
 set_target_properties(ezPhysX::Foundation PROPERTIES IMPORTED_LOCATION_DEBUG "${PHYSX_BIN_DIR}/${PHYSX_BIN_DEBUG}/PhysXFoundation${PHYSX_DLL_SUFFIX}")
