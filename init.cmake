@@ -3,7 +3,7 @@
 ######################################
 
 if(EZ_CMAKE_PLATFORM_WINDOWS)
-    set (EZ_BUILD_PHYSX ON CACHE BOOL "Whether support for nVidia PhysX should be added")
+    set (EZ_BUILD_PHYSX OFF CACHE BOOL "Whether support for nVidia PhysX should be added")
 else()
     set (EZ_BUILD_PHYSX OFF CACHE BOOL "Whether support for nVidia PhysX should be added" FORCE)
 endif()
