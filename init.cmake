@@ -8,15 +8,13 @@ else()
     set (EZ_BUILD_PHYSX OFF CACHE BOOL "Whether support for nVidia PhysX should be added" FORCE)
 endif()
 
-# set (EZ_VCPKG_INSTALL_PHYSX OFF CACHE BOOL "Whether to install PhysX 4 via vcpkg.")
-
 ######################################
 ### ez_requires_physx()
 ######################################
 
 macro(ez_requires_physx)
 
-	ez_requires_windows()
+    ez_requires(EZ_CMAKE_PLATFORM_WINDOWS)
 	ez_requires(EZ_BUILD_PHYSX)
 
 endmacro()
