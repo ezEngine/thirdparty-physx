@@ -8,6 +8,8 @@ else()
     set (EZ_BUILD_PHYSX OFF CACHE BOOL "Whether support for nVidia PhysX should be added" FORCE)
 endif()
 
+mark_as_advanced(FORCE EZ_BUILD_PHYSX)
+
 ######################################
 ### ez_requires_physx()
 ######################################
